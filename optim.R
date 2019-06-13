@@ -22,12 +22,16 @@ p      = 5
 lambda = 3
 alpha  = 2
 
+echp = exp(-c * h / p)
+lhp  = lambda * h / p
+lhp1 = 1 - lhp
+
 x    = seq(from = 0, to = B, by = h)
 Vold = 300 * rep(1, length(x))
 
 for (t in 1:nSteps){
    Vnew    = vector()
-   Vnew[1] = exp(-c * h / p) * Vold[2]
+   Vnew[1] = echp * Vold[2]
   
    for (k in 2:(length( Vold ) - 1)){
       Vsum = 0
@@ -39,8 +43,8 @@ for (t in 1:nSteps){
                   (1-exp(-alpha*h))
       }
     
-      if((1-lambda*h/p) * exp(-c*h/p) * Vold[k + 1] + Vsum * lambda*h/p * exp(-c*h/p) > Vold[k - 1] + h){
-         Vnew[k] = (1-lambda * h / p) * exp(-c * h / p) * Vold[k + 1] + Vsum * lambda * h / p * exp(-c * h / p)
+      if((lhp1 * Vold[k + 1] + Vsum * lhp ) * echp > Vold[k - 1] + h){
+         Vnew[k] = ( lhp1 * Vold[k + 1] + Vsum * lhp ) * echp
       }
       else{
          Vnew[k] = Vold[k - 1] + h
