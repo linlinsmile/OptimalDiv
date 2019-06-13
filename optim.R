@@ -29,9 +29,9 @@ eah  = exp(-alpha * h)
 
 x    = seq(from = 0, to = B, by = h)
 Vold = 300 * rep(1, length(x))
+Vnew    = vector()
 
-for (t in 1:nSteps){
-   Vnew    = vector()
+for (t in 1:nSteps){ 
    Vnew[1] = echp * Vold[2]
   
    for (k in 2:(length( Vold ) - 1)){
