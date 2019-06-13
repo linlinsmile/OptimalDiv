@@ -25,6 +25,7 @@ alpha  = 2
 echp = exp(-c * h / p)
 lhp  = lambda * h / p
 lhp1 = 1 - lhp
+eah  = exp(-alpha * h)
 
 x    = seq(from = 0, to = B, by = h)
 Vold = 300 * rep(1, length(x))
@@ -34,15 +35,9 @@ for (t in 1:nSteps){
    Vnew[1] = echp * Vold[2]
   
    for (k in 2:(length( Vold ) - 1)){
-      Vsum = 0
-    
-      for (m in 1:(k-1)){
-         Vsum =   Vsum + 
-                  Vold[k-m] * 
-                  exp(-alpha*m*h) * 
-                  (1-exp(-alpha*h))
-      }
-    
+      m    = 1:(k-1)   
+      Vsum = sum(Vold[k-m] * (1 - eah) *  eah^m)
+      
       if((lhp1 * Vold[k + 1] + Vsum * lhp ) * echp > Vold[k - 1] + h){
          Vnew[k] = ( lhp1 * Vold[k + 1] + Vsum * lhp ) * echp
       }
